@@ -16,4 +16,15 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="SecondFlowWindow.axaml.cs">
+      <DependentUpon>SecondFlowWindow.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="FirstFlowWindow.axaml.cs">
+      <DependentUpon>FirstFlowWindow.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

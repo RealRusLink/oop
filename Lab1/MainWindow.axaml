@@ -6,8 +6,10 @@
         x:Class="Lab1.MainWindow"
         Title="Lab1">
         <StackPanel>
-                <Button x:Name="Flow" Click="Flow_OnClick">Робота1</Button>
-                <Button x:Name="Group" Click="Group_OnClick">Робота2</Button>
+                <Menu>
+                        <MenuItem Header="Робота 1" Click="Flow_OnClick"></MenuItem>
+                        <MenuItem Header="Робота 2" Click="Group_OnClick"></MenuItem>
+                </Menu>
                 <TextBlock x:Name="SelectedGroup"></TextBlock>
         </StackPanel>
 </Window>

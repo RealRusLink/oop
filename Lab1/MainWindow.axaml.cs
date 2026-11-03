@@ -12,8 +12,8 @@ public partial class MainWindow : Window
     private async void Flow_OnClick(object? sender, RoutedEventArgs e)
     {
         var windows = new LinkedList<FlowWindow>([
-            FlowWindow.First(),
-            new(disabledResults: DialogResult.Next)
+            new FirstFlowWindow(),
+            new SecondFlowWindow()
         ]);
 
         for (var node = windows.First; node is not null; )

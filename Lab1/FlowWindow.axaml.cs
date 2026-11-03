@@ -16,9 +16,7 @@ public partial class FlowWindow : Window
         Title = name;
         DisableButtons(disabledResults);
     }
-
-    public static FlowWindow First(string name = "Dialog") => 
-        new(name, DialogResult.Ok, DialogResult.Previous);
+    
 
     public Task<DialogResult> ShowDialog()
     {
@@ -27,7 +25,7 @@ public partial class FlowWindow : Window
         return _tcs.Task;
     }
 
-    private void DisableButtons(IEnumerable<DialogResult> disabledResults)
+    protected void DisableButtons(IEnumerable<DialogResult> disabledResults)
     {
         foreach (var result in disabledResults)
         {
@@ -39,14 +37,14 @@ public partial class FlowWindow : Window
         }
     }
 
-    private void Finish(DialogResult result)
+    protected void Finish(DialogResult result)
     {
         Hide();
         _tcs?.TrySetResult(result);
     }
 
-    private void Next_OnClick(object? sender, RoutedEventArgs e) => Finish(DialogResult.Next);
-    private void Previous_OnClick(object? sender, RoutedEventArgs e) => Finish(DialogResult.Previous);
-    private void Cancel_OnClick(object? sender, RoutedEventArgs e) => Finish(DialogResult.Cancel);
-    private void Action_OnClick(object? sender, RoutedEventArgs e) => Finish(DialogResult.Ok);
+    protected void Next_OnClick(object? sender, RoutedEventArgs e) => Finish(DialogResult.Next);
+    protected void Previous_OnClick(object? sender, RoutedEventArgs e) => Finish(DialogResult.Previous);
+    protected void Cancel_OnClick(object? sender, RoutedEventArgs e) => Finish(DialogResult.Cancel);
+    protected void Action_OnClick(object? sender, RoutedEventArgs e) => Finish(DialogResult.Ok);
 }

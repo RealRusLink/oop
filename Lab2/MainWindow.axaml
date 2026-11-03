@@ -5,5 +5,32 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Lab2.MainWindow"
         Title="Lab2">
-    Welcome to Avalonia!
+    <StackPanel>
+        <Menu>
+            <MenuItem Name="File" Header="Файл"></MenuItem>
+            <MenuItem x:Name="Objects" Name="Objects" Header="Об'єкти">
+                <MenuItem Name="Point" Header="Крапка" Click="OnObjectSelectClick">
+                    <MenuItem.Icon>
+                        <RadioButton Name="PointRadio" GroupName="ObjectsGroup" IsChecked="True"  />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Name="Line" Header="Лінія" Click="OnObjectSelectClick">
+                    <MenuItem.Icon>
+                        <RadioButton Name="LineRadio" GroupName="ObjectsGroup" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Name="Rectangle" Header="Прямокутник" Click="OnObjectSelectClick">
+                    <MenuItem.Icon>
+                        <RadioButton Name="RectangleRadio" GroupName="ObjectsGroup"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Name="Ellipse" Header="Елліпс" Click="OnObjectSelectClick">
+                    <MenuItem.Icon>
+                        <RadioButton Name="EllipseRadio" GroupName="ObjectsGroup"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Name="Help" Header="Довідка"></MenuItem>
+        </Menu>
+    </StackPanel>
 </Window>

@@ -1,0 +1,44 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="using:Lab3"
+        xmlns:figures="using:Lab3.Figures"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Lab3.MainWindow"
+        Title="Lab3">
+    <Grid RowDefinitions="Auto,*">
+        <Menu Grid.Row="0">
+            <MenuItem Name="File" Header="Файл"></MenuItem>
+            <MenuItem x:Name="Objects" Name="Objects" Header="Об'єкти">
+                <MenuItem Name="Point" Header="Крапка" Tag="{x:Static figures:ShapeKind.Point}" Click="OnObjectSelectClick">
+                    <MenuItem.Icon>
+                        <RadioButton Name="PointRadio" GroupName="ObjectsGroup" IsChecked="True"  />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Name="Line" Header="Лінія" Tag="{x:Static figures:ShapeKind.Line}" Click="OnObjectSelectClick">
+                    <MenuItem.Icon>
+                        <RadioButton Name="LineRadio" GroupName="ObjectsGroup" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Name="Rectangle" Header="Прямокутник" Tag="{x:Static figures:ShapeKind.Rectangle}" Click="OnObjectSelectClick">
+                    <MenuItem.Icon>
+                        <RadioButton Name="RectangleRadio" GroupName="ObjectsGroup"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Name="Ellipse" Header="Елліпс" Tag="{x:Static figures:ShapeKind.Ellipse}" Click="OnObjectSelectClick">
+                    <MenuItem.Icon>
+                        <RadioButton Name="EllipseRadio" GroupName="ObjectsGroup"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Name="Help" Header="Довідка"></MenuItem>
+        </Menu>
+        <local:DrawingCanvas Grid.Row="1"
+                             x:Name="DrawingCanvas"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             ClipToBounds="True">
+        </local:DrawingCanvas>
+    </Grid>
+</Window>

@@ -8,3 +8,8 @@ obj
 !Лабораторна робота *.docx
 private.gitignore
 *.user
+.~lock*
+*.txt
+*.zip
+*.md
+!readme.md

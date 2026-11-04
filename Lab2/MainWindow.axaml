@@ -2,29 +2,31 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="using:Lab2"
+        xmlns:figures="using:Lab2.Figures"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Lab2.MainWindow"
         Title="Lab2">
-    <StackPanel>
-        <Menu>
+    <Grid RowDefinitions="Auto,*">
+        <Menu Grid.Row="0">
             <MenuItem Name="File" Header="Файл"></MenuItem>
             <MenuItem x:Name="Objects" Name="Objects" Header="Об'єкти">
-                <MenuItem Name="Point" Header="Крапка" Click="OnObjectSelectClick">
+                <MenuItem Name="Point" Header="Крапка" Tag="{x:Static figures:ShapeKind.Point}" Click="OnObjectSelectClick">
                     <MenuItem.Icon>
                         <RadioButton Name="PointRadio" GroupName="ObjectsGroup" IsChecked="True"  />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Name="Line" Header="Лінія" Click="OnObjectSelectClick">
+                <MenuItem Name="Line" Header="Лінія" Tag="{x:Static figures:ShapeKind.Line}" Click="OnObjectSelectClick">
                     <MenuItem.Icon>
                         <RadioButton Name="LineRadio" GroupName="ObjectsGroup" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Name="Rectangle" Header="Прямокутник" Click="OnObjectSelectClick">
+                <MenuItem Name="Rectangle" Header="Прямокутник" Tag="{x:Static figures:ShapeKind.Rectangle}" Click="OnObjectSelectClick">
                     <MenuItem.Icon>
                         <RadioButton Name="RectangleRadio" GroupName="ObjectsGroup"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Name="Ellipse" Header="Елліпс" Click="OnObjectSelectClick">
+                <MenuItem Name="Ellipse" Header="Елліпс" Tag="{x:Static figures:ShapeKind.Ellipse}" Click="OnObjectSelectClick">
                     <MenuItem.Icon>
                         <RadioButton Name="EllipseRadio" GroupName="ObjectsGroup"/>
                     </MenuItem.Icon>
@@ -32,5 +34,11 @@
             </MenuItem>
             <MenuItem Name="Help" Header="Довідка"></MenuItem>
         </Menu>
-    </StackPanel>
+        <local:DrawingCanvas Grid.Row="1"
+                             x:Name="DrawingCanvas"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             ClipToBounds="True">
+        </local:DrawingCanvas>
+    </Grid>
 </Window>

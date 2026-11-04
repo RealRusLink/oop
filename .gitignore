@@ -6,3 +6,5 @@ bin
 obj
 *.docx
 !Лабораторна робота *.docx
+private.gitignore
+*.user

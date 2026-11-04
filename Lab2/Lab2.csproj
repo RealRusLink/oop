@@ -18,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Figures\" />
+    <Compile Update="DrawingCanvas.cs">
+      <DependentUpon>MainWindow.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

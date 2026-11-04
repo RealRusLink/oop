@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Avalonia.Controls;
@@ -13,12 +14,10 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         ToolChanged += OnToolChanged;
-        Checked = Objects.Items.OfType<MenuItem>().FirstOrDefault(i => i.Icon is RadioButton { IsChecked: true });
+        CurrentShape = ShapeKind.Point;
     }
 
-    public event PropertyChangedEventHandler? ToolChanged;
-
-    public MenuItem? Checked
+    public ShapeKind? CurrentShape
     {
         get;
         private set
@@ -28,24 +27,44 @@ public partial class MainWindow : Window
                 return;
             }
             field = value;
-            ToolChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Checked)));
+            ToolChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentShape)));
         }
-    }
+    } = null;
+
+    public event PropertyChangedEventHandler? ToolChanged;
+
 
     private void OnToolChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (Checked?.Tag is ShapeKind kind)
+        DrawingCanvas.ShapeKind = CurrentShape ?? ShapeKind.Point;
+        var toolbarButtons = ToolbarButtons.Children.OfType<RadioButton>().Where(rb => rb is { Tag: ShapeKind});
+        var menuButtons = ObjectsMenu.Items.OfType<MenuItem>()
+            .Select(item => item.Icon)
+            .OfType<RadioButton>()
+            .Where(button => button.Tag is ShapeKind);
+        var allButtons = toolbarButtons.Concat(menuButtons);
+        foreach (var button in allButtons)
         {
-            DrawingCanvas.ShapeKind = kind;
+            if (button?.Tag is ShapeKind shapeKind)
+            {
+                button.IsChecked = shapeKind == CurrentShape;
+            }
         }
     }
 
     private void OnObjectSelectClick(object? sender, RoutedEventArgs e)
     {
-        if (sender is MenuItem { Icon: RadioButton radioButton } item)
+        if (sender is MenuItem { Icon: RadioButton { Tag: ShapeKind kind } })
         {
-            radioButton.IsChecked = true;
-            Checked = item;
+            CurrentShape = kind;
+        }
+    }
+
+    private void OnToolbarButtonClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is RadioButton { Tag: ShapeKind kind })
+        {
+            CurrentShape = kind;
         }
     }
 }

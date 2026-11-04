@@ -13,12 +13,12 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         ToolChanged += OnToolChanged;
-        Checked = Objects.Items.OfType<MenuItem>().FirstOrDefault(i => i.IsChecked);
+        Checked = Objects.Items.OfType<MenuItem>().FirstOrDefault(i => i.Icon is RadioButton { IsChecked: true });
     }
 
-    public event PropertyChangedEventHandler ToolChanged;
+    public event PropertyChangedEventHandler? ToolChanged;
 
-    public MenuItem Checked
+    public MenuItem? Checked
     {
         get;
         private set
@@ -28,15 +28,15 @@ public partial class MainWindow : Window
                 return;
             }
             field = value;
-            ToolChanged.Invoke(this, new PropertyChangedEventArgs(nameof(Checked)));
+            ToolChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Checked)));
         }
     }
 
     private void OnToolChanged(object? sender, PropertyChangedEventArgs e)
     {
-        Title = $"Lab2 - {Checked.Header}";
+        Title = $"Lab2 - {Checked?.Header}";
 
-        if (Checked.Tag is ShapeKind kind)
+        if (Checked?.Tag is ShapeKind kind)
         {
             DrawingCanvas.ShapeKind = kind;
         }

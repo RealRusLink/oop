@@ -7,7 +7,7 @@ namespace Lab3.Figures;
 public class RectangleShape((Point first, Point second) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {
-    private static readonly IBrush FillBrush = Brushes.White;
+    private static readonly IBrush FillBrush = Brushes.Orange;
 
     public override void Draw(DrawingContext context)
     {
@@ -24,9 +24,8 @@ public class RectangleShape((Point first, Point second) coordinates, bool tempor
 
     private Rect GetBounds()
     {
-        var center = Coordinates.First;
-        var corner = Coordinates.Second;
-        var opposite = new Point(2 * center.X - corner.X, 2 * center.Y - corner.Y);
+        var corner = Coordinates.First;
+        var opposite = Coordinates.Second;
 
         var left = Math.Min(corner.X, opposite.X);
         var top = Math.Min(corner.Y, opposite.Y);

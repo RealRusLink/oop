@@ -34,8 +34,6 @@ public partial class MainWindow : Window
 
     private void OnToolChanged(object? sender, PropertyChangedEventArgs e)
     {
-        Title = $"Lab3 - {Checked?.Header}";
-
         if (Checked?.Tag is ShapeKind kind)
         {
             DrawingCanvas.ShapeKind = kind;

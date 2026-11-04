@@ -9,7 +9,7 @@ namespace Lab3;
 
 public class DrawingCanvas : Control
 {   
-    private const int ShapeCapacity = 115;
+    private const int ShapeCapacity = 116;
 
     private readonly IBrush _backgroundBrush = Brushes.White;
     private readonly Shape?[] _shapes = new Shape?[ShapeCapacity];

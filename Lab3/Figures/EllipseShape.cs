@@ -7,21 +7,25 @@ namespace Lab3.Figures;
 public class EllipseShape((Point first, Point second) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {
+    
+    private static readonly IBrush FillBrush = Brushes.White;
+    
     public override void Draw(DrawingContext context)
     {
         var rect = GetBounds();
 
-        context.DrawEllipse(null, Temporary ? TemporaryPen : FinalPen, rect.Center, rect.Width / 2, rect.Height / 2);
+        context.DrawEllipse(Temporary ? null : FillBrush, Temporary ? TemporaryPen : FinalPen, rect.Center, rect.Width / 2, rect.Height / 2);
     }
 
     private Rect GetBounds()
     {
-        var first = Coordinates.First;
-        var second = Coordinates.Second;
+        var center = Coordinates.First;
+        var corner = Coordinates.Second;
+        var opposite = new Point(2 * center.X - corner.X, 2 * center.Y - corner.Y);
 
-        var left = Math.Min(first.X, second.X);
-        var top = Math.Min(first.Y, second.Y);
+        var left = Math.Min(corner.X, opposite.X);
+        var top = Math.Min(corner.Y, opposite.Y);
 
-        return new Rect(left, top, Math.Abs(first.X - second.X), Math.Abs(first.Y - second.Y));
+        return new Rect(left, top, Math.Abs(corner.X - opposite.X), Math.Abs(corner.Y - opposite.Y));
     }
 }

@@ -4,6 +4,7 @@ using Avalonia.Media;
 
 namespace Lab4.Figures;
 
+[ShapeText("Прямокутник", "Малює прямокутник")]
 public class RectangleShape((Point first, Point second) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {
@@ -11,25 +12,25 @@ public class RectangleShape((Point first, Point second) coordinates, bool tempor
 
     public override void Draw(DrawingContext context)
     {
-        var rect = GetBounds();
+        var bounds = GetBounds();
 
         if (Temporary)
         {
-            context.DrawRectangle(null, TemporaryPen, rect);
+            context.DrawRectangle(null, TemporaryPen, bounds);
             return;
         }
 
-        context.DrawRectangle(FillBrush, FinalPen, rect);
+        context.DrawRectangle(FillBrush, FinalPen, bounds);
     }
 
     private Rect GetBounds()
     {
-        var corner = Coordinates.First;
-        var opposite = Coordinates.Second;
+        var firstPoint = Coordinates.First;
+        var secondPoint = Coordinates.Second;
 
-        var left = Math.Min(corner.X, opposite.X);
-        var top = Math.Min(corner.Y, opposite.Y);
+        var leftEdge = Math.Min(firstPoint.X, secondPoint.X);
+        var topEdge = Math.Min(firstPoint.Y, secondPoint.Y);
 
-        return new Rect(left, top, Math.Abs(corner.X - opposite.X), Math.Abs(corner.Y - opposite.Y));
+        return new Rect(leftEdge, topEdge, Math.Abs(firstPoint.X - secondPoint.X), Math.Abs(firstPoint.Y - secondPoint.Y));
     }
 }

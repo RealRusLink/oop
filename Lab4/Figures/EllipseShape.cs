@@ -4,6 +4,7 @@ using Avalonia.Media;
 
 namespace Lab4.Figures;
 
+[ShapeText("Елліпс", "Малює елліпс")]
 public class EllipseShape((Point first, Point second) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {
@@ -12,20 +13,20 @@ public class EllipseShape((Point first, Point second) coordinates, bool temporar
     
     public override void Draw(DrawingContext context)
     {
-        var rect = GetBounds();
+        var bounds = GetBounds();
 
-        context.DrawEllipse(Temporary ? null : FillBrush, Temporary ? TemporaryPen : FinalPen, rect.Center, rect.Width / 2, rect.Height / 2);
+        context.DrawEllipse(Temporary ? null : FillBrush, Temporary ? TemporaryPen : FinalPen, bounds.Center, bounds.Width / 2, bounds.Height / 2);
     }
 
     private Rect GetBounds()
     {
-        var center = Coordinates.First;
-        var corner = Coordinates.Second;
-        var opposite = new Point(2 * center.X - corner.X, 2 * center.Y - corner.Y);
+        var centerPoint = Coordinates.First;
+        var secondPoint = Coordinates.Second;
+        var oppositePoint = new Point(2 * centerPoint.X - secondPoint.X, 2 * centerPoint.Y - secondPoint.Y);
 
-        var left = Math.Min(corner.X, opposite.X);
-        var top = Math.Min(corner.Y, opposite.Y);
+        var leftEdge = Math.Min(secondPoint.X, oppositePoint.X);
+        var topEdge = Math.Min(secondPoint.Y, oppositePoint.Y);
 
-        return new Rect(left, top, Math.Abs(corner.X - opposite.X), Math.Abs(corner.Y - opposite.Y));
+        return new Rect(leftEdge, topEdge, Math.Abs(secondPoint.X - oppositePoint.X), Math.Abs(secondPoint.Y - oppositePoint.Y));
     }
 }

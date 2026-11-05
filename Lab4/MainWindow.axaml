@@ -11,26 +11,6 @@
         <Menu Grid.Row="0">
             <MenuItem Name="File" Header="Файл"></MenuItem>
             <MenuItem x:Name="ObjectsMenu" Name="ObjectsMenu" Header="Об'єкти">
-                <MenuItem Name="Point" Header="Крапка" Click="OnObjectSelectClick">
-                    <MenuItem.Icon>
-                        <RadioButton Name="PointRadio" GroupName="ObjectsGroup" Tag="{x:Static figures:ShapeKind.Point}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Name="Line" Header="Лінія" Click="OnObjectSelectClick">
-                    <MenuItem.Icon>
-                        <RadioButton Name="LineRadio" GroupName="ObjectsGroup" Tag="{x:Static figures:ShapeKind.Line}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Name="Rectangle" Header="Прямокутник" Click="OnObjectSelectClick">
-                    <MenuItem.Icon>
-                        <RadioButton Name="RectangleRadio" GroupName="ObjectsGroup" Tag="{x:Static figures:ShapeKind.Rectangle}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Name="Ellipse" Header="Елліпс" Click="OnObjectSelectClick">
-                    <MenuItem.Icon>
-                        <RadioButton Name="EllipseRadio" GroupName="ObjectsGroup" Tag="{x:Static figures:ShapeKind.Ellipse}" />
-                    </MenuItem.Icon>
-                </MenuItem>
             </MenuItem>
             <MenuItem Name="Help" Header="Довідка"></MenuItem>
         </Menu>
@@ -72,11 +52,6 @@
                         <Setter Property="BorderBrush" Value="#999999"/>
                     </Style>
                 </StackPanel.Styles>
-                
-                <RadioButton Name="PointButton" Content="Крапка" ToolTip.Tip="Малювання крапки на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Point}" Click="OnToolbarButtonClick" />
-                <RadioButton Name="LineButton" Content="Лінія" ToolTip.Tip="Малювання лінії на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Line}" Click="OnToolbarButtonClick" />
-                <RadioButton Name="RectangleButton" Content="Прямокутник" ToolTip.Tip="Малювання прямокутника на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Rectangle}" Click="OnToolbarButtonClick" />
-                <RadioButton Name="EllipseButton" Content="Елліпс" ToolTip.Tip="Малювання елліпса на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Ellipse}" Click="OnToolbarButtonClick" />
             </StackPanel>
         </Border>
 

@@ -8,35 +8,42 @@ using Lab4.Figures;
 namespace Lab4;
 
 public class DrawingCanvas : Control
-{   
-    private const int ShapeCapacity = 116;
+{
+    private const int MaxShapes = 116;
 
     private readonly IBrush _backgroundBrush = Brushes.White;
-    private readonly Shape?[] _shapes = new Shape?[ShapeCapacity];
+    private readonly Shape?[] _completedShapes = new Shape?[MaxShapes];
 
-    private int _shapeCount;
-    private Shape? _currentShape;
+    private int _completedShapeCount;
+    private Shape? _pendingShape;
 
-    public ShapeKind ShapeKind { get; set; }
+    public Type ShapeType
+    {
+        get;
+        set
+        {
+            if (value is null || !value.IsSubclassOf(typeof(Shape))) return;
+            field = value;
+        }
+    }
 
     public override void Render(DrawingContext context)
     {
         base.Render(context);
-        var bounds = new Rect(Bounds.Size);
-        if (bounds.Width <= 0 || bounds.Height <= 0)
-        {
-            return;
-        }
-        context.FillRectangle(_backgroundBrush, bounds);
 
-        using (context.PushClip(bounds))
+        var canvasBounds = new Rect(Bounds.Size);
+        if (canvasBounds.Width <= 0 || canvasBounds.Height <= 0) return;
+
+        context.FillRectangle(_backgroundBrush, canvasBounds);
+
+        using (context.PushClip(canvasBounds))
         {
-            for (var i = 0; i < _shapeCount; i++)
+            for (var index = 0; index < _completedShapeCount; index++)
             {
-                _shapes[i]?.Draw(context);
+                _completedShapes[index]?.Draw(context);
             }
 
-            _currentShape?.Draw(context);
+            _pendingShape?.Draw(context);
         }
     }
 
@@ -44,15 +51,15 @@ public class DrawingCanvas : Control
     {
         base.OnPointerPressed(e);
 
-        var pointerPosition = e.GetPosition(this);
-        _currentShape = ShapeKind switch
+        var position = e.GetPosition(this);
+        var newShape = ShapeType
+            .GetConstructor([typeof((Point, Point)), typeof(bool)])
+            .Invoke(new object[] { (position, position), true });
+
+        if (newShape is Shape shape)
         {
-            ShapeKind.Point => new PointShape((pointerPosition, pointerPosition)),
-            ShapeKind.Line => new LineShape((pointerPosition, pointerPosition)),
-            ShapeKind.Rectangle => new RectangleShape((pointerPosition, pointerPosition)),
-            ShapeKind.Ellipse => new EllipseShape((pointerPosition, pointerPosition)),
-            _ => null,
-        };
+            _pendingShape = shape;
+        }
 
         InvalidateVisual();
     }
@@ -61,11 +68,11 @@ public class DrawingCanvas : Control
     {
         base.OnPointerMoved(e);
 
-        var pointerPosition = e.GetPosition(this);
+        var position = e.GetPosition(this);
 
-        if (_currentShape is not null)
+        if (_pendingShape is not null)
         {
-            _currentShape.Coordinates = (_currentShape.Coordinates.First, pointerPosition);
+            _pendingShape.Coordinates = (_pendingShape.Coordinates.First, position);
         }
 
         InvalidateVisual();
@@ -75,22 +82,18 @@ public class DrawingCanvas : Control
     {
         base.OnPointerReleased(e);
 
-        if (_currentShape is null)
+        if (_pendingShape is null) return;
+
+        var position = e.GetPosition(this);
+        _pendingShape.Coordinates = (_pendingShape.Coordinates.First, position);
+        _pendingShape.Temporary = false;
+
+        if (_completedShapeCount < MaxShapes)
         {
-            return;
+            _completedShapes[_completedShapeCount++] = _pendingShape;
         }
 
-        var pointerPosition = e.GetPosition(this);
-        _currentShape.Coordinates = (_currentShape.Coordinates.First, pointerPosition);
-        _currentShape.Temporary = false;
-
-        if (_shapeCount < ShapeCapacity)
-        {
-            _shapes[_shapeCount++] = _currentShape;
-        }
-
-        _currentShape = null;
-
+        _pendingShape = null;
         InvalidateVisual();
     }
 }

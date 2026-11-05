@@ -8,7 +8,15 @@ namespace Lab4.Figures;
 public class RectangleShape((Point first, Point second) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {
-    private static readonly IBrush FillBrush = Brushes.Orange;
+    private IBrush _fillBrush = Brushes.Orange;
+
+    public RectangleShape((Point first, Point second) coordinates, bool temporary, Color fillColor)
+        : this(coordinates, temporary)
+    {
+        _fillBrush = new SolidColorBrush(fillColor);
+    }
+
+    protected virtual IBrush FillBrush => _fillBrush;
 
     public override void Draw(DrawingContext context)
     {

@@ -8,6 +8,29 @@ namespace Lab4.Figures;
 public class CubeShape((Point first, Point second) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {
+    private readonly RectangleShape _backFace = new(coordinates, temporary, Colors.Transparent);
+    private readonly RectangleShape _frontFace = new(coordinates, temporary, Colors.Transparent);
+
+    private readonly LineShape _frontTopLeftEdge = new(coordinates, temporary);
+    private readonly LineShape _frontTopRightEdge = new(coordinates, temporary);
+    private readonly LineShape _frontBottomRightEdge = new(coordinates, temporary);
+    private readonly LineShape _frontBottomLeftEdge = new(coordinates, temporary);
+
+    public override bool Temporary
+    {
+        get => base.Temporary;
+        set
+        {
+            base.Temporary = value;
+            _backFace.Temporary = value;
+            _frontFace.Temporary = value;
+            _frontTopLeftEdge.Temporary = value;
+            _frontTopRightEdge.Temporary = value;
+            _frontBottomRightEdge.Temporary = value;
+            _frontBottomLeftEdge.Temporary = value;
+        }
+    }
+
     public override void Draw(DrawingContext context)
     {
         var (start, end) = Coordinates;
@@ -28,21 +51,21 @@ public class CubeShape((Point first, Point second) coordinates, bool temporary =
         var backBottomRight = new Point(leftEdge + boxWidth + depthOffset, topEdge + boxHeight - depthOffset);
         var backBottomLeft = new Point(leftEdge + depthOffset, topEdge + boxHeight - depthOffset);
 
-        var linePen = Temporary ? TemporaryPen : FinalPen;
+        _backFace.Coordinates = (backTopLeft, backBottomRight);
+        _frontFace.Coordinates = (frontTopLeft, frontBottomRight);
 
-        context.DrawLine(linePen, frontTopLeft, frontTopRight);
-        context.DrawLine(linePen, frontTopRight, frontBottomRight);
-        context.DrawLine(linePen, frontBottomRight, frontBottomLeft);
-        context.DrawLine(linePen, frontBottomLeft, frontTopLeft);
+        _frontTopLeftEdge.Coordinates = (frontTopLeft, backTopLeft);
+        _frontTopRightEdge.Coordinates = (frontTopRight, backTopRight);
+        _frontBottomRightEdge.Coordinates = (frontBottomRight, backBottomRight);
+        _frontBottomLeftEdge.Coordinates = (frontBottomLeft, backBottomLeft);
 
-        context.DrawLine(linePen, backTopLeft, backTopRight);
-        context.DrawLine(linePen, backTopRight, backBottomRight);
-        context.DrawLine(linePen, backBottomRight, backBottomLeft);
-        context.DrawLine(linePen, backBottomLeft, backTopLeft);
+        _backFace.Draw(context);
 
-        context.DrawLine(linePen, frontTopLeft, backTopLeft);
-        context.DrawLine(linePen, frontTopRight, backTopRight);
-        context.DrawLine(linePen, frontBottomRight, backBottomRight);
-        context.DrawLine(linePen, frontBottomLeft, backBottomLeft);
+        _frontTopLeftEdge.Draw(context);
+        _frontTopRightEdge.Draw(context);
+        _frontBottomRightEdge.Draw(context);
+        _frontBottomLeftEdge.Draw(context);
+
+        _frontFace.Draw(context);
     }
 }

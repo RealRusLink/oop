@@ -73,10 +73,30 @@
                     </Style>
                 </StackPanel.Styles>
                 
-                <RadioButton Name="PointButton" Content="Крапка" ToolTip.Tip="Малювання крапки на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Point}" Click="OnToolbarButtonClick" />
-                <RadioButton Name="LineButton" Content="Лінія" ToolTip.Tip="Малювання лінії на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Line}" Click="OnToolbarButtonClick" />
-                <RadioButton Name="RectangleButton" Content="Прямокутник" ToolTip.Tip="Малювання прямокутника на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Rectangle}" Click="OnToolbarButtonClick" />
-                <RadioButton Name="EllipseButton" Content="Елліпс" ToolTip.Tip="Малювання елліпса на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Ellipse}" Click="OnToolbarButtonClick" />
+                <RadioButton Name="PointButton" ToolTip.Tip="Малювання крапки на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Point}" Click="OnToolbarButtonClick">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <Image Width="20" Height="20" Source="avares://Lab3/icons/point.png" />
+                        <TextBlock Text="Крапка" VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton Name="LineButton" ToolTip.Tip="Малювання лінії на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Line}" Click="OnToolbarButtonClick">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <Image Width="20" Height="20" Source="avares://Lab3/icons/line.png" />
+                        <TextBlock Text="Лінія" VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton Name="RectangleButton" ToolTip.Tip="Малювання прямокутника на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Rectangle}" Click="OnToolbarButtonClick">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <Image Width="20" Height="20" Source="avares://Lab3/icons/rectangle.png" />
+                        <TextBlock Text="Прямокутник" VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton Name="EllipseButton" ToolTip.Tip="Малювання елліпса на полотні" GroupName="ToolbarGroup" Tag="{x:Static figures:ShapeKind.Ellipse}" Click="OnToolbarButtonClick">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <Image Width="20" Height="20" Source="avares://Lab3/icons/ellipse.png" />
+                        <TextBlock Text="Елліпс" VerticalAlignment="Center" />
+                    </StackPanel>
+                </RadioButton>
             </StackPanel>
         </Border>
 

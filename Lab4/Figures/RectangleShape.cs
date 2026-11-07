@@ -4,7 +4,7 @@ using Avalonia.Media;
 
 namespace Lab4.Figures;
 
-[ShapeText("Прямокутник", "Малює прямокутник")]
+[ShapeText("Прямокутник", "Малює прямокутник", "icons/rectangle.png")]
 public class RectangleShape((Point first, Point second) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {

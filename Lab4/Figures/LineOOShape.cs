@@ -3,7 +3,7 @@ using Avalonia.Media;
 
 namespace Lab4.Figures;
 
-[ShapeText("О-О Лінія", "Малює О-О лінію")]
+[ShapeText("О-О Лінія", "Малює О-О лінію", "icons/lineoo.png")]
 public class LineOOShape((Point start, Point end) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {

@@ -3,7 +3,7 @@ using Avalonia.Media;
 
 namespace Lab4.Figures;
 
-[ShapeText("Крапка", "Малює крапку")]
+[ShapeText("Крапка", "Малює крапку", "icons/point.png")]
 public class PointShape((Point first, Point second) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {

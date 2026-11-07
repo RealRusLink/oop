@@ -9,7 +9,9 @@
         Title="Lab4">
     <Grid RowDefinitions="Auto,Auto,*">
         <Menu Grid.Row="0">
-            <MenuItem Name="File" Header="Файл"></MenuItem>
+            <MenuItem Name="File" Header="Файл">
+                <MenuItem Header="Таблиця об'єктів" Click="OnOpenObjectsTableClick" />
+            </MenuItem>
             <MenuItem x:Name="ObjectsMenu" Name="ObjectsMenu" Header="Об'єкти">
             </MenuItem>
             <MenuItem Name="Help" Header="Довідка"></MenuItem>

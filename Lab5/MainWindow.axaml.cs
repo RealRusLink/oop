@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Lab5;
 
 public partial class MainWindow : Window
 {
+    public ObservableCollection<Shape> CompletedShapes { get; } = new();
+
     private List<(Type ShapeType, ShapeTextAttribute Text)> CollectTools()
     {
         var tools = new List<(Type ShapeType, ShapeTextAttribute Text)>();
@@ -44,6 +47,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        DrawingCanvas.CompletedShapes = CompletedShapes;
 
         Fill((tool) => new MenuItem
             {
@@ -137,5 +141,11 @@ public partial class MainWindow : Window
         {
             CurrentShape = shapeType;
         }
+    }
+
+    private void OnOpenObjectsTableClick(object? sender, RoutedEventArgs e)
+    {
+        var tableWindow = new ObjectsTable(CompletedShapes);
+        tableWindow.Show();
     }
 }

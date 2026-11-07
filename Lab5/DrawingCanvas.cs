@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -12,12 +13,11 @@ public class DrawingCanvas : Control
     private const int MaxShapes = 116;
 
     private readonly IBrush _backgroundBrush = Brushes.White;
-    private readonly Shape?[] _completedShapes = new Shape?[MaxShapes];
-
-    private int _completedShapeCount;
     private Shape? _pendingShape;
 
-    public Type ShapeType
+    public IList<Shape>? CompletedShapes { get; set; }
+
+    public Type? ShapeType
     {
         get;
         set
@@ -38,9 +38,12 @@ public class DrawingCanvas : Control
 
         using (context.PushClip(canvasBounds))
         {
-            for (var index = 0; index < _completedShapeCount; index++)
+            if (CompletedShapes is not null)
             {
-                _completedShapes[index]?.Draw(context);
+                foreach (var shape in CompletedShapes)
+                {
+                    shape.Draw(context);
+                }
             }
 
             _pendingShape?.Draw(context);
@@ -52,9 +55,10 @@ public class DrawingCanvas : Control
         base.OnPointerPressed(e);
 
         var position = e.GetPosition(this);
-        var newShape = ShapeType
-            .GetConstructor([typeof((Point, Point)), typeof(bool)])
-            .Invoke(new object[] { (position, position), true });
+        var constructor = ShapeType?.GetConstructor([typeof((Point, Point)), typeof(bool)]);
+        if (constructor is null) return;
+
+        var newShape = constructor.Invoke(new object[] { (position, position), true });
 
         if (newShape is Shape shape)
         {
@@ -88,9 +92,9 @@ public class DrawingCanvas : Control
         _pendingShape.Coordinates = (_pendingShape.Coordinates.First, position);
         _pendingShape.Temporary = false;
 
-        if (_completedShapeCount < MaxShapes)
+        if (CompletedShapes is not null && CompletedShapes.Count < MaxShapes)
         {
-            _completedShapes[_completedShapeCount++] = _pendingShape;
+            CompletedShapes.Add(_pendingShape);
         }
 
         _pendingShape = null;

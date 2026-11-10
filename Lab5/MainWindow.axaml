@@ -6,7 +6,7 @@
         xmlns:figures="using:Lab5.Figures"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Lab5.MainWindow"
-        Title="Lab4">
+        Title="Lab5">
     <Grid RowDefinitions="Auto,Auto,*">
         <Menu Grid.Row="0">
             <MenuItem Name="File" Header="Файл">

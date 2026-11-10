@@ -23,7 +23,6 @@
         <DataGridTextColumn x:DataType="figures:Shape" Header="Назва об'єкта" Binding="{Binding ., Converter={StaticResource ShapeTableValueConverter}, ConverterParameter=Name}" Width="*" />
         <DataGridTextColumn x:DataType="figures:Shape" Header="Початкова точка" Binding="{Binding ., Converter={StaticResource ShapeTableValueConverter}, ConverterParameter=StartPoint}" Width="*" />
         <DataGridTextColumn x:DataType="figures:Shape" Header="Кінцева точка" Binding="{Binding ., Converter={StaticResource ShapeTableValueConverter}, ConverterParameter=EndPoint}" Width="*" />
-        <DataGridTextColumn x:DataType="figures:Shape" Header="Статус" Binding="{Binding ., Converter={StaticResource ShapeTableValueConverter}, ConverterParameter=Status}" Width="*" />
       </DataGrid.Columns>
     </DataGrid>
   </Grid>

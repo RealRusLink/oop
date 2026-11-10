@@ -55,7 +55,6 @@ public sealed class ShapeTableValueConverter : IValueConverter
                 "Name" => shape.Name,
                 "StartPoint" => shape.StartPoint,
                 "EndPoint" => shape.EndPoint,
-                "Status" => shape.Status,
                 _ => null
             }
             : null;

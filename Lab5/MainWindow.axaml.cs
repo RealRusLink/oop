@@ -1,9 +1,6 @@
 using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -17,29 +14,11 @@ public partial class MainWindow : Window
 {
     public ObservableCollectionForce<Shape> CompletedShapes { get; } = new();
 
-    private List<(Type ShapeType, ShapeTextAttribute Text)> CollectTools()
-    {
-        var tools = new List<(Type ShapeType, ShapeTextAttribute Text)>();
-        var shapeTypes = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(type => type.IsSubclassOf(typeof(Shape)))
-            .ToList();
-
-        foreach (var shapeType in shapeTypes)
-        {
-            var text = Attribute.GetCustomAttribute(shapeType, typeof(ShapeTextAttribute)) is ShapeTextAttribute attribute
-                ? attribute
-                : new ShapeTextAttribute(shapeType.Name, shapeType.FullName ?? shapeType.Name);
-
-            tools.Add((shapeType, text));
-        }
-
-        return tools;
-    }
-
     private void Fill<T>(Func<(Type ShapeType, ShapeTextAttribute Text), T> createItem, Action<T> registerItem)
     {
-        var tools = CollectTools();
-        var items = tools.Select(createItem).ToList();
+        var items = ShapeCatalog.Attributes
+            .Select(pair => createItem((pair.Key, pair.Value)))
+            .ToList();
 
         foreach (var item in items)
         {

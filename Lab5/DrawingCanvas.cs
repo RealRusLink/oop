@@ -59,11 +59,11 @@ public class DrawingCanvas : Control
             {
                 foreach (var shape in CompletedShapes)
                 {
-                    shape.Draw(context);
+                    shape.Show(context);
                 }
             }
 
-            _pendingShape?.Draw(context);
+            _pendingShape?.Show(context);
         }
     }
 
@@ -72,10 +72,10 @@ public class DrawingCanvas : Control
         base.OnPointerPressed(e);
 
         var position = e.GetPosition(this);
-        var constructor = ShapeType?.GetConstructor([typeof((Point, Point)), typeof(bool)]);
+        var constructor = ShapeType?.GetConstructor([typeof((Point, Point)), typeof(ShapeState)]);
         if (constructor is null) return;
 
-        var newShape = constructor.Invoke(new object[] { (position, position), true });
+        var newShape = constructor.Invoke(new object[] { (position, position), ShapeState.Temporary });
 
         if (newShape is Shape shape)
         {
@@ -107,7 +107,7 @@ public class DrawingCanvas : Control
 
         var position = e.GetPosition(this);
         _pendingShape.Coordinates = (_pendingShape.Coordinates.First, position);
-        _pendingShape.Temporary = false;
+        _pendingShape.State = ShapeState.Final;
 
         if (CompletedShapes is not null && CompletedShapes.Count < MaxShapes)
         {

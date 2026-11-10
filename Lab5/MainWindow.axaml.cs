@@ -15,7 +15,7 @@ namespace Lab5;
 
 public partial class MainWindow : Window
 {
-    public ObservableCollection<Shape> CompletedShapes { get; } = new();
+    public ObservableCollectionForce<Shape> CompletedShapes { get; } = new();
 
     private List<(Type ShapeType, ShapeTextAttribute Text)> CollectTools()
     {

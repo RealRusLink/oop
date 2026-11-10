@@ -5,17 +5,18 @@ using Avalonia.Media;
 namespace Lab5.Figures;
 
 [ShapeText("Елліпс", "Малює елліпс", "icons/ellipse.png")]
-public class EllipseShape((Point first, Point second) coordinates, bool temporary = true)
-    : Shape(coordinates, temporary)
+public class EllipseShape((Point first, Point second) coordinates, ShapeState state = ShapeState.Temporary)
+    : Shape(coordinates, state)
 {
-    
-    private static readonly IBrush FillBrush = Brushes.White;
-    
-    public override void Draw(DrawingContext context)
+    private static readonly IBrush EllipseFillBrush = Brushes.White;
+
+    protected override IBrush? FillBrush => EllipseFillBrush;
+
+    protected override void DrawWith(DrawingContext context, ShapeStyle style)
     {
         var bounds = GetBounds();
 
-        context.DrawEllipse(Temporary ? null : FillBrush, Temporary ? TemporaryPen : FinalPen, bounds.Center, bounds.Width / 2, bounds.Height / 2);
+        context.DrawEllipse(style.Fill, style.Pen, bounds.Center, bounds.Width / 2, bounds.Height / 2);
     }
 
     private Rect GetBounds()

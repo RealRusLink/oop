@@ -5,30 +5,22 @@ using Avalonia.Media;
 namespace Lab5.Figures;
 
 [ShapeText("Прямокутник", "Малює прямокутник", "icons/rectangle.png")]
-public class RectangleShape((Point first, Point second) coordinates, bool temporary = true)
-    : Shape(coordinates, temporary)
+public class RectangleShape((Point first, Point second) coordinates, ShapeState state = ShapeState.Temporary)
+    : Shape(coordinates, state)
 {
     private IBrush _fillBrush = Brushes.Orange;
 
-    public RectangleShape((Point first, Point second) coordinates, bool temporary, Color fillColor)
-        : this(coordinates, temporary)
+    public RectangleShape((Point first, Point second) coordinates, ShapeState state, Color fillColor)
+        : this(coordinates, state)
     {
         _fillBrush = new SolidColorBrush(fillColor);
     }
 
-    protected virtual IBrush FillBrush => _fillBrush;
+    protected override IBrush? FillBrush => _fillBrush;
 
-    public override void Draw(DrawingContext context)
+    protected override void DrawWith(DrawingContext context, ShapeStyle style)
     {
-        var bounds = GetBounds();
-
-        if (Temporary)
-        {
-            context.DrawRectangle(null, TemporaryPen, bounds);
-            return;
-        }
-
-        context.DrawRectangle(FillBrush, FinalPen, bounds);
+        context.DrawRectangle(style.Fill, style.Pen, GetBounds());
     }
 
     private Rect GetBounds()

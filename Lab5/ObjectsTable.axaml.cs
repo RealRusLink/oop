@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
+using Avalonia.Input;
 using Lab5.Figures;
 
 namespace Lab5;
 
 public partial class ObjectsTable : Window
 {
-    public ObservableCollection<Shape> Shapes { get; }
+    public ObservableCollectionForce<Shape> Shapes { get; }
 
-    public ObjectsTable(ObservableCollection<Shape> shapes)
+    public ObjectsTable(ObservableCollectionForce<Shape> shapes)
     {
         Shapes = shapes;
         InitializeComponent();
@@ -20,10 +22,26 @@ public partial class ObjectsTable : Window
 
     private void DataGrid_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (sender is DataGrid dg && e is { AddedItems: [Shape shape], RemovedItems: [] })
+        if (sender is DataGrid dg)
         {
-            dg.SelectedItem = null;
-            Shapes.Remove(shape);
+            foreach (var item in e.AddedItems)
+            {
+                if (item is Shape shape) shape.State = ShapeState.Highlighted;
+            }
+            foreach (var item in e.RemovedItems)
+            {
+                if (item is Shape shape) shape.State = ShapeState.Final;
+            }
+            Shapes.ForceEvent();
+        }
+    }
+
+    private void DataGridTable_OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (sender is DataGrid dg && e.Key is Key.Delete)
+        {
+            Shapes.RemoveRange(DataGridTable.SelectedItems.OfType<Shape>());
+            DataGridTable.SelectedItem = null;
         }
     }
 }

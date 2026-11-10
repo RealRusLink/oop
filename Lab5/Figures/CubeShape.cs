@@ -1,37 +1,23 @@
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Media;
 
 namespace Lab5.Figures;
 
 [ShapeText("Куб", "Малює куб", "icons/cube.png")]
-public class CubeShape((Point first, Point second) coordinates, bool temporary = true)
-    : Shape(coordinates, temporary)
+public class CubeShape((Point first, Point second) coordinates, ShapeState state = ShapeState.Temporary)
+    : Shape(coordinates, state)
 {
-    private readonly RectangleShape _backFace = new(coordinates, temporary, Colors.Transparent);
-    private readonly RectangleShape _frontFace = new(coordinates, temporary, Colors.Transparent);
+    private readonly RectangleShape _backFace = new(coordinates, state, Colors.Transparent);
+    private readonly RectangleShape _frontFace = new(coordinates, state, Colors.Transparent);
 
-    private readonly LineShape _frontTopLeftEdge = new(coordinates, temporary);
-    private readonly LineShape _frontTopRightEdge = new(coordinates, temporary);
-    private readonly LineShape _frontBottomRightEdge = new(coordinates, temporary);
-    private readonly LineShape _frontBottomLeftEdge = new(coordinates, temporary);
+    private readonly LineShape _frontTopLeftEdge = new(coordinates, state);
+    private readonly LineShape _frontTopRightEdge = new(coordinates, state);
+    private readonly LineShape _frontBottomRightEdge = new(coordinates, state);
+    private readonly LineShape _frontBottomLeftEdge = new(coordinates, state);
 
-    public override bool Temporary
-    {
-        get => base.Temporary;
-        set
-        {
-            base.Temporary = value;
-            _backFace.Temporary = value;
-            _frontFace.Temporary = value;
-            _frontTopLeftEdge.Temporary = value;
-            _frontTopRightEdge.Temporary = value;
-            _frontBottomRightEdge.Temporary = value;
-            _frontBottomLeftEdge.Temporary = value;
-        }
-    }
-
-    public override void Draw(DrawingContext context)
+    protected override void DrawWith(DrawingContext context, ShapeStyle style)
     {
         var (start, end) = Coordinates;
 
@@ -59,13 +45,22 @@ public class CubeShape((Point first, Point second) coordinates, bool temporary =
         _frontBottomRightEdge.Coordinates = (frontBottomRight, backBottomRight);
         _frontBottomLeftEdge.Coordinates = (frontBottomLeft, backBottomLeft);
 
-        _backFace.Draw(context);
+        foreach (var part in Parts())
+        {
+            part.State = style.State;
+            part.Show(context);
+        }
+    }
 
-        _frontTopLeftEdge.Draw(context);
-        _frontTopRightEdge.Draw(context);
-        _frontBottomRightEdge.Draw(context);
-        _frontBottomLeftEdge.Draw(context);
+    private IEnumerable<Shape> Parts()
+    {
+        yield return _backFace;
 
-        _frontFace.Draw(context);
+        yield return _frontTopLeftEdge;
+        yield return _frontTopRightEdge;
+        yield return _frontBottomRightEdge;
+        yield return _frontBottomLeftEdge;
+
+        yield return _frontFace;
     }
 }

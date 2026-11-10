@@ -14,7 +14,10 @@
     <DataGrid ItemsSource="{Binding Shapes}"
               AutoGenerateColumns="False"
               GridLinesVisibility="All"
-              IsReadOnly="True">
+              IsReadOnly="True"
+              SelectionMode="Single"
+              x:Name="DataGridTable"
+              SelectionChanged="DataGrid_OnSelectionChanged">
       <DataGrid.Columns>
         <DataGridTextColumn x:DataType="figures:Shape" Header="Назва об'єкта" Binding="{Binding ., Converter={StaticResource ShapeTableValueConverter}, ConverterParameter=Name}" Width="*" />
         <DataGridTextColumn x:DataType="figures:Shape" Header="Початкова точка" Binding="{Binding ., Converter={StaticResource ShapeTableValueConverter}, ConverterParameter=StartPoint}" Width="*" />

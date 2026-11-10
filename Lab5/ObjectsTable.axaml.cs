@@ -17,6 +17,15 @@ public partial class ObjectsTable : Window
         InitializeComponent();
         DataContext = this;
     }
+
+    private void DataGrid_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is DataGrid dg && e is { AddedItems: [Shape shape], RemovedItems: [] })
+        {
+            dg.SelectedItem = null;
+            Shapes.Remove(shape);
+        }
+    }
 }
 
 public sealed class ShapeTableValueConverter : IValueConverter

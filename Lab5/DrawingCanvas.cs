@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -10,12 +12,27 @@ namespace Lab5;
 
 public class DrawingCanvas : Control
 {
+
+    private void CompletedShapesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        InvalidateVisual();
+    }
+
+
     private const int MaxShapes = 116;
 
     private readonly IBrush _backgroundBrush = Brushes.White;
     private Shape? _pendingShape;
 
-    public IList<Shape>? CompletedShapes { get; set; }
+    public ObservableCollection<Shape>? CompletedShapes
+    {
+        get;
+        set
+        {
+            field = value;
+            value?.CollectionChanged += CompletedShapesOnCollectionChanged;
+        }
+    }
 
     public Type? ShapeType
     {

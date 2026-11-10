@@ -2,7 +2,6 @@
 using Avalonia.Media;
 
 namespace Lab5.Figures;
-
 public abstract class Shape((Point first, Point second) initialCoordinates, bool isTemporary = true)
 {
     protected static readonly IPen FinalPen = new Pen(Brushes.Black, 2);

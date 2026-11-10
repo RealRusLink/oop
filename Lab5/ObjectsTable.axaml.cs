@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using Avalonia.Controls;
@@ -11,13 +12,13 @@ namespace Lab5;
 
 public partial class ObjectsTable : Window
 {
-    public ObservableCollectionForce<Shape> Shapes { get; }
+    public ObservableCollection<Shape> Shapes { get; }
 
     public event EventHandler<ShapeSelectionChangedEventArgs>? SelectionChanged;
 
     public event EventHandler<IReadOnlyList<Shape>>? DeleteRequested;
 
-    public ObjectsTable(ObservableCollectionForce<Shape> shapes)
+    public ObjectsTable(ObservableCollection<Shape> shapes)
     {
         Shapes = shapes;
         InitializeComponent();

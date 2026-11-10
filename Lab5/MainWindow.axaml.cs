@@ -9,6 +9,7 @@ namespace Lab5;
 public partial class MainWindow : Window
 {
     private readonly ShapeFileManager _files;
+    private ObjectsTable? _objectsTable;
 
     public ObservableCollectionForce<Shape> CompletedShapes { get; } = new();
 
@@ -17,8 +18,9 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         DrawingCanvas.CompletedShapes = CompletedShapes;
+        Closed += OnClosed;
 
-        _files = new ShapeFileManager(this);
+        _files = new ShapeFileManager(StorageProvider);
         _files.CurrentPathChanged += OnCurrentPathChanged;
 
         foreach (var (shapeType, text) in ShapeTools.All)
@@ -65,11 +67,29 @@ public partial class MainWindow : Window
 
     private void OnOpenObjectsTableClick(object? sender, RoutedEventArgs e)
     {
+        if (_objectsTable is not null)
+        {
+            _objectsTable.Close();
+            return;
+        }
+
         var table = new ObjectsTable(CompletedShapes);
         table.SelectionChanged += OnTableSelectionChanged;
         table.DeleteRequested += OnTableDeleteRequested;
+        table.Closed += OnObjectsTableClosed;
+        _objectsTable = table;
         table.Show();
     }
+
+    private void OnObjectsTableClosed(object? sender, EventArgs e)
+    {
+        if (ReferenceEquals(sender, _objectsTable))
+        {
+            _objectsTable = null;
+        }
+    }
+
+    private void OnClosed(object? sender, EventArgs e) => _objectsTable?.Close();
 
     private void OnTableSelectionChanged(object? sender, ShapeSelectionChangedEventArgs e)
     {

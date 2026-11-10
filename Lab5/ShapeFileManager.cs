@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Lab5.Figures;
 
 namespace Lab5;
 
-public sealed class ShapeFileManager(TopLevel owner)
+public sealed class ShapeFileManager(IStorageProvider storageProvider)
 {
     private static readonly FilePickerFileType CsvFileType = new("CSV")
     {
@@ -28,15 +28,11 @@ public sealed class ShapeFileManager(TopLevel owner)
 
     public event EventHandler? CurrentPathChanged;
 
-    public async Task OpenAsync(ObservableCollectionForce<Shape> shapes)
+    public async Task OpenAsync(ObservableCollection<Shape> shapes)
     {
         var path = await PickOpenFileAsync();
 
-        if (path is null)
-        {
-            Console.WriteLine("Відкриття файлу скасовано");
-            return;
-        }
+        if (path is null) return;
 
         CurrentPath = path;
 
@@ -50,12 +46,10 @@ public sealed class ShapeFileManager(TopLevel owner)
             {
                 shapes.Add(shape);
             }
-
-            Console.WriteLine($"Завантажено {loaded.Count} об'єктів з файлу: {path}");
         }
-        catch (Exception exception)
+        catch (Exception)
         {
-            Console.WriteLine($"Не вдалося відкрити файл: {exception.Message}");
+            // ignored
         }
     }
 
@@ -65,11 +59,7 @@ public sealed class ShapeFileManager(TopLevel owner)
         {
             var path = await PickSaveFileAsync();
 
-            if (path is null)
-            {
-                Console.WriteLine("Збереження файлу скасовано");
-                return;
-            }
+            if (path is null) return;
 
             CurrentPath = path;
         }
@@ -81,11 +71,7 @@ public sealed class ShapeFileManager(TopLevel owner)
     {
         var path = await PickSaveFileAsync();
 
-        if (path is null)
-        {
-            Console.WriteLine("Збереження файлу скасовано");
-            return;
-        }
+        if (path is null) return;
 
         CurrentPath = path;
         Save(path, shapes);
@@ -96,17 +82,16 @@ public sealed class ShapeFileManager(TopLevel owner)
         try
         {
             ShapeCsv.Save(path, shapes);
-            Console.WriteLine($"Збережено {shapes.Count} об'єктів у файл: {path}");
         }
-        catch (Exception exception)
+        catch (Exception)
         {
-            Console.WriteLine($"Не вдалося зберегти файл: {exception.Message}");
+            // ignored
         }
     }
 
     private async Task<string?> PickOpenFileAsync()
     {
-        var files = await owner.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = "Відкрити файл",
             AllowMultiple = false,
@@ -118,7 +103,7 @@ public sealed class ShapeFileManager(TopLevel owner)
 
     private async Task<string?> PickSaveFileAsync()
     {
-        var file = await owner.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
         {
             Title = "Зберегти файл",
             DefaultExtension = "csv",

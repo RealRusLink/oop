@@ -5,7 +5,7 @@ using System.Reflection;
 using Avalonia;
 using Lab5.Figures;
 
-namespace Lab5;
+namespace Lab5.Figures;
 
 public static class ShapeCatalog
 {

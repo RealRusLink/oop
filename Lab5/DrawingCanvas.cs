@@ -72,14 +72,13 @@ public class DrawingCanvas : Control
         base.OnPointerPressed(e);
 
         var position = e.GetPosition(this);
-        var constructor = ShapeType?.GetConstructor([typeof((Point, Point)), typeof(ShapeState)]);
-        if (constructor is null) return;
+        var newShape = ShapeType is null
+            ? null
+            : ShapeCatalog.Create(ShapeType, (position, position), ShapeState.Temporary);
 
-        var newShape = constructor.Invoke(new object[] { (position, position), ShapeState.Temporary });
-
-        if (newShape is Shape shape)
+        if (newShape is not null)
         {
-            _pendingShape = shape;
+            _pendingShape = newShape;
         }
 
         InvalidateVisual();

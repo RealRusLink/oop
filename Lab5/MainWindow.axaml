@@ -10,6 +10,10 @@
     <Grid RowDefinitions="Auto,Auto,*">
         <Menu Grid.Row="0">
             <MenuItem Name="File" Header="Файл">
+                <MenuItem Header="Відкрити" Click="OnOpenFileClick" />
+                <MenuItem Header="Зберегти" Click="OnSaveFileClick" />
+                <MenuItem Header="Зберегти як" Click="OnSaveFileAsClick" />
+                <Separator />
                 <MenuItem Header="Таблиця об'єктів" Click="OnOpenObjectsTableClick" />
             </MenuItem>
             <MenuItem x:Name="ObjectsMenu" Name="ObjectsMenu" Header="Об'єкти">

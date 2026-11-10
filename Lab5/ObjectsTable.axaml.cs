@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Avalonia.Controls;
@@ -13,6 +13,10 @@ public partial class ObjectsTable : Window
 {
     public ObservableCollectionForce<Shape> Shapes { get; }
 
+    public event EventHandler<ShapeSelectionChangedEventArgs>? SelectionChanged;
+
+    public event EventHandler<IReadOnlyList<Shape>>? DeleteRequested;
+
     public ObjectsTable(ObservableCollectionForce<Shape> shapes)
     {
         Shapes = shapes;
@@ -22,27 +26,27 @@ public partial class ObjectsTable : Window
 
     private void DataGrid_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (sender is DataGrid dg)
-        {
-            foreach (var item in e.AddedItems)
-            {
-                if (item is Shape shape) shape.State = ShapeState.Highlighted;
-            }
-            foreach (var item in e.RemovedItems)
-            {
-                if (item is Shape shape) shape.State = ShapeState.Final;
-            }
-            Shapes.ForceEvent();
-        }
+        var added = e.AddedItems.OfType<Shape>().ToList();
+        var removed = e.RemovedItems.OfType<Shape>().ToList();
+
+        if (added.Count == 0 && removed.Count == 0) return;
+
+        SelectionChanged?.Invoke(this, new ShapeSelectionChangedEventArgs(added, removed));
     }
 
     private void DataGridTable_OnKeyDown(object? sender, KeyEventArgs e)
     {
-        if (sender is DataGrid dg && e.Key is Key.Delete)
+        if (e.Key is not Key.Delete) return;
+
+        var selected = DataGridTable.SelectedItems.OfType<Shape>().ToList();
+        DataGridTable.SelectedItem = null;
+
+        if (selected.Count > 0)
         {
-            Shapes.RemoveRange(DataGridTable.SelectedItems.OfType<Shape>());
-            DataGridTable.SelectedItem = null;
+            DeleteRequested?.Invoke(this, selected);
         }
+
+        e.Handled = true;
     }
 }
 

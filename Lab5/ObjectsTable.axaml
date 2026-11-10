@@ -1,0 +1,29 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:figures="using:Lab5.Figures"
+        xmlns:local="using:Lab5"
+        x:Class="Lab5.ObjectsTable"
+        x:DataType="local:ObjectsTable"
+        Width="800"
+        Height="450"
+        Title="Таблиця об'єктів">
+  <Window.Resources>
+    <local:ShapeTableValueConverter x:Key="ShapeTableValueConverter" />
+  </Window.Resources>
+  <Grid Margin="8">
+    <DataGrid ItemsSource="{Binding Shapes}"
+              AutoGenerateColumns="False"
+              GridLinesVisibility="All"
+              IsReadOnly="True"
+              SelectionMode="Single"
+              x:Name="DataGridTable"
+              SelectionChanged="DataGrid_OnSelectionChanged">
+      <DataGrid.Columns>
+        <DataGridTextColumn x:DataType="figures:Shape" Header="Назва об'єкта" Binding="{Binding ., Converter={StaticResource ShapeTableValueConverter}, ConverterParameter=Name}" Width="*" />
+        <DataGridTextColumn x:DataType="figures:Shape" Header="Початкова точка" Binding="{Binding ., Converter={StaticResource ShapeTableValueConverter}, ConverterParameter=StartPoint}" Width="*" />
+        <DataGridTextColumn x:DataType="figures:Shape" Header="Кінцева точка" Binding="{Binding ., Converter={StaticResource ShapeTableValueConverter}, ConverterParameter=EndPoint}" Width="*" />
+        <DataGridTextColumn x:DataType="figures:Shape" Header="Статус" Binding="{Binding ., Converter={StaticResource ShapeTableValueConverter}, ConverterParameter=Status}" Width="*" />
+      </DataGrid.Columns>
+    </DataGrid>
+  </Grid>
+</Window>

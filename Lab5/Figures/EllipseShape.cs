@@ -4,7 +4,7 @@ using Avalonia.Media;
 
 namespace Lab5.Figures;
 
-[ShapeText("Елліпс", "Малює елліпс")]
+[ShapeText("Елліпс", "Малює елліпс", "icons/ellipse.png")]
 public class EllipseShape((Point first, Point second) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {

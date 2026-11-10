@@ -6,6 +6,9 @@ using System.Linq;
 using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Lab5.Figures;
 
 namespace Lab5;
@@ -44,6 +47,24 @@ public partial class MainWindow : Window
         }
     }
 
+    private static Bitmap LoadIcon(string? iconPath)
+    {
+        var relativePath = string.IsNullOrWhiteSpace(iconPath)
+            ? "icons/unknown.png"
+            : iconPath.TrimStart('/');
+
+        try
+        {
+            using var stream = AssetLoader.Open(new Uri($"avares://Lab5/{relativePath}"));
+            return new Bitmap(stream);
+        }
+        catch
+        {
+            using var stream = AssetLoader.Open(new Uri("avares://Lab5/icons/unknown.png"));
+            return new Bitmap(stream);
+        }
+    }
+
     public MainWindow()
     {
         InitializeComponent();
@@ -70,7 +91,25 @@ public partial class MainWindow : Window
                 var toolButton = new RadioButton
                 {
                     Name = tool.ShapeType.Name,
-                    Content = tool.Text.ToolName,
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 6,
+                        Children =
+                        {
+                            new Image
+                            {
+                                Width = 20,
+                                Height = 20,
+                                Source = LoadIcon(tool.Text.IconPath)
+                            },
+                            new TextBlock
+                            {
+                                Text = tool.Text.ToolName,
+                                VerticalAlignment = VerticalAlignment.Center
+                            }
+                        }
+                    },
                     GroupName = "ToolbarGroup",
                     Tag = tool.ShapeType
                 };

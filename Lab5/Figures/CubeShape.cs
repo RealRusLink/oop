@@ -4,7 +4,7 @@ using Avalonia.Media;
 
 namespace Lab5.Figures;
 
-[ShapeText("Куб", "Малює куб")]
+[ShapeText("Куб", "Малює куб", "icons/cube.png")]
 public class CubeShape((Point first, Point second) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {

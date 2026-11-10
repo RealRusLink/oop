@@ -3,7 +3,7 @@ using Avalonia.Media;
 
 namespace Lab5.Figures;
 
-[ShapeText("Лінія", "Малює лінію")]
+[ShapeText("Лінія", "Малює лінію", "icons/line.png")]
 public class LineShape((Point first, Point second) coordinates, bool temporary = true)
     : Shape(coordinates, temporary)
 {
